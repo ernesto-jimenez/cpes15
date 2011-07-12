@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Capture Image</title>
+  
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=320, initial-scale=1">
+	
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
+  <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="phonegap.0.9.6.js"></script>
+  <script type="text/javascript" charset="utf-8">
+
+  function captureSuccess(mediaFiles) {
+    var html = "", i, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+      html = "<img src=\"" + mediaFiles[i].fullPath + "\">";
+    }
+    document.getElementById("images").innerHTML = html;
+    navigator.notification.vibrate(2500);
+  }
+
+  function captureError(error) {
+    var msg = 'An error occurred during capture: ' + error.code;
+    navigator.notification.alert(msg, null, 'Uh oh!');
+  }
+
+  function captureImage() {
+    navigator.device.capture.captureImage(captureSuccess, captureError);
+  }
+  </script>
+  <style type="text/css" media="screen">
+    #images {
+      text-align: center;
+    }
+    #images img {
+      width: 290px;
+      height: 350px;
+    }
+  </style>
+</head>
+<body>
+  <div data-role="page">
+    <div data-role="content">
+      <button onclick="captureImage();">Capture Image</button>
+      <br>
+      <div id="images"></div>
+    </div>
+  </div>
+</body>
+</html>

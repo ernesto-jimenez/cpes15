@@ -1,0 +1,96 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Tweets nearby</title> 
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
+  <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+  function loadTweets (data) {
+    var tweets = $("<div></div>");
+    var tpl = "<li><img src=\"{AVATAR}\"><h3>@{NAME}</h3><p>{TEXT}</p><p class=\"ui-li-aside\"><strong>{DATE}</strong></p></li>";
+    $.each(data.results, function(i,tweet){
+      var html = tpl;
+      html = html.replace(/\{AVATAR\}/, tweet.profile_image_url);
+      html = html.replace(/\{NAME\}/,   tweet.from_user);
+      html = html.replace(/\{TEXT\}/,   tweet.text);
+      html = html.replace(/\{DATE\}/,   tweet.created_at);
+      tweets.append($(html));
+    });
+    $("#tweets").html(tweets.html());
+    $.mobile.hidePageLoadingMsg();
+    $.mobile.changePage($("#tweets_nearby"), {changeHash: false});
+  };
+  function searchTweets (position) {
+    var radius = "5km";
+    var coords = position.coords;
+    var geocode = coords.latitude + "," + coords.longitude + "," + radius;
+    $.getJSON("http://search.twitter.com/search.json?callback=?",
+      {
+        geocode: geocode
+      },
+      loadTweets
+    );
+  };
+  function errorCallback (error) {
+    $.mobile.hidePageLoadingMsg();
+    var message = "inténtalo de nuevo";
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        message = "si no nos das permiso no sirve de nada que mires esta web ;)";
+        break;
+      case error.TIMEOUT:
+        message = "el GPS estaba tardando demasiado en localizarte";
+        break;
+      case error.POSITION_UNAVAILABLE:
+        message = "el GPS no ha conseguido localizarte";
+    }
+    $("#location_error_reason").text(message);
+    $.mobile.changePage($("#location_error"));
+  };
+  $("#load_tweets").live('click', function (event) {
+    $.mobile.showPageLoadingMsg();
+    navigator.geolocation.getCurrentPosition(
+      searchTweets, errorCallback,
+      {enableHighAccuracy: true}
+    );
+  });
+  </script>
+  <style type="text/css" media="screen">
+    .ui-li-thumb {
+      margin-top: 1.2em;
+      margin-left: 1.2em
+    }
+  </style>
+</head>
+<body>
+  <div data-role="page">
+    <div data-role="content">
+      <h1>Tweets cerca</h1>
+      <input type="button" id="load_tweets" name="load_tweets" value="Encontrat tweets cercanos">
+    </div>
+  </div>
+  
+  <div data-role="page" id="location_error">
+    <div data-role="content">
+      <h1>Ooops</h1>
+      <p>No podemos ver dónde estás, <span id="location_error_reason"></span>.</p>
+    </div>
+  </div>
+
+  <div data-role="page" id="tweets_nearby">
+
+    <div data-role="header" data-theme="f">
+      <h1>Tweets Cerca</h1>
+    </div>
+
+    <div data-role="content">
+      <ul data-role="listview" data-filter="true" id="tweets">
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

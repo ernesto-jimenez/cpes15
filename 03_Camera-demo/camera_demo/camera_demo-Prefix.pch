@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'camera_demo' target in the 'camera_demo' project
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+#endif

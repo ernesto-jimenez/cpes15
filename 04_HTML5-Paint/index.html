@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML5 Paint</title>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function () {
+        var paint = document.getElementById('paint');
+        var drawing = false;
+        paint.height = $(window).height();
+        paint.width  = $(window).width();
+        var ctx = paint.getContext("2d");
+        var path;
+        var drawDot = function (event, radius) {
+          var x = event.pageX, y = event.pageY;
+          console.log("Draw in "+ x + "," + y);
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI*2, true); 
+          path.push({x: x, y: y});
+          ctx.closePath();
+          ctx.fill();
+        };
+        var drawPath = function () {
+          ctx.fillStyle = "black";
+          ctx.beginPath();
+          var p1, p2, total = path.length;
+          p1 = path[0];
+          ctx.moveTo(p1.x, p1.y);
+          for (var i = 1; i < total; i++) {
+            p2 = path[i];
+            ctx.quadraticCurveTo(p1.x, p1.y, p2.x, p2.y);
+            p1 = p2;
+          }
+          ctx.stroke();
+        };
+        ctx.fillStyle = "black";
+        
+        var draw = {
+          start: function (event) {
+            path = [];
+            event.preventDefault();
+            ctx.fillStyle = "green";
+            drawDot(event.touches ? event.touches[0] : event, 10);
+            ctx.fillStyle = "black";
+            drawing = event.touches ? event.touches[0] : true;
+          },
+          stroke: function (event) {
+            event.preventDefault();
+            if (!drawing) return;
+            drawDot(event.touches ? event.touches[0] : event, 1);
+          },
+          end: function (event) {
+            event.preventDefault();
+            ctx.fillStyle = "red";
+            drawDot(drawing === true ? event : drawing, 10);
+            drawing = false;
+            drawPath();
+          }
+        };
+        
+        paint.addEventListener("mousedown",  draw.start);
+        paint.addEventListener("touchstart", draw.start);
+        
+        window.addEventListener("mousemove", draw.stroke);
+        window.addEventListener("touchmove", draw.stroke);
+        
+        window.addEventListener("mouseup", draw.end);
+        window.addEventListener("touchend", draw.end);
+      });
+    </script>
+    <style type="text/css" media="screen">
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="paint"></canvas>
+  </body>
+</html>
