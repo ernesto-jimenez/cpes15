@@ -60,7 +60,6 @@ class AgendaParser
        
        <% events[day].sort {|a,b| a[:start_time] <=> b[:start_time]}.each do |event| %>
          <li>
-          <!--p><%= event[:name] %></p-->
           <dl>
           <dt><%= event[:name] %></dt>
           <dd class="location"><%= event[:location] %></dd>
