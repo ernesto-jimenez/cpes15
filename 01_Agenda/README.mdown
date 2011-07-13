@@ -1,0 +1,9 @@
+# Instrucciones
+
+Usar ruby 1.9 con la gema bundler instalada (``gem install bundler``)
+
+```
+bundle install
+bundle exec ruby parser.rb > agenda.html 
+```
+   
