@@ -15,6 +15,7 @@ Enlaces:
 
   * jQuery Mobile: http://jquerymobile.com/
   * PhoneGap: http://www.phonegap.com/
+  * remote-js: http://github.com/ernesto-jimenez/remote-js
   * SproutCore: http://www.sproutcore.com/
 
 Autores:
