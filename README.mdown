@@ -1,0 +1,23 @@
+# Hay vida más allá de las aplicaciones nativas
+
+Material de soporte del taller impartido en la Campus Party Valencia 2011.
+
+Contenido:
+
+  * 01_Agenda: Agenda de la campus party con jQuery Mobile
+  * 02_Nearby: Carga los tweets cercanos usando la API de Geolocation
+  * 03_Camera-demo: Ejemplo usando la API de cámara en PhoneGap 0.9.6
+  * 04_HTML5-Paint: Pintando en el móvil con HTML5 canvas y touch events
+
+El vídeo del taller está disponible en http://campus-party.tv
+
+Enlaces:
+
+  * jQuery Mobile: http://jquerymobile.com/
+  * PhoneGap: http://www.phonegap.com/
+  * SproutCore: http://www.sproutcore.com/
+
+Autores:
+
+  * Ernesto Jiménez
+  * Belén Albeza
